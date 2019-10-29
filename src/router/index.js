@@ -1,29 +1,111 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import store from 'store/index'
 
 Vue.use(VueRouter)
+
+const Home = () => import('views/home/Home');
+
+
+const Invest = () => import('views/invest/Invest');
+
+const LoginIndex = () => import('views/login/LoginIndex');
+const Login = () => import('views/login/Login');
+const Register = () => import('views/login/Register');
+
+const News = () => import('views/news/News');
+
+
+const User = () => import('views/user/User');
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    redirect: '/home'
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
-
+    path: '/home',
+    name: 'home',
+    component: Home,
+    meta: {
+      islogin: false
+    }
+  },
+  {
+    path: '/invest',
+    name: 'invest',
+    component: Invest,
+    meta: {
+      islogin: false
+    }
+  },
+  {
+    path: '/login',
+    component: LoginIndex,
+    meta: {
+      islogin: false
+    },
+    children:[
+      {
+        path:'register',
+        name: 'register',
+        component:Register,
+        meta: {
+          islogin: false
+        },
+      },
+      {
+        path:'login',
+        name: 'login',
+        component:Login,
+        meta: {
+          islogin: false
+        },
+      }
+    ],
+  },
+  {
+    path: '/news',
+    name: 'news',
+    component: News,
+    meta: {
+      islogin: false
+    }
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: User,
+    meta: {
+      islogin: true
+    }
+  },
+];
+// 页面刷新时，重新赋值token
+if (window.localStorage.getItem('Us')) {
+  store.commit('login', window.localStorage.getItem('Us'))
+}
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(r => r.meta.islogin)) {
+    if (store.state.Us) {
+      next();
+    }
+    else {
+      next({
+        path: '/login/login',
+        // query: {redirect: to.fullPath}
+      })
+    }
+  }
+  else {
+    next();
+  }
 })
 
 export default router
