@@ -11,25 +11,33 @@
             <i>年化利率</i>
           </div>
         </van-col>
-        <van-col span="6"><div class="mid"><p>{{periodName}}</p><span>出借期限</span></div></van-col>
         <van-col span="8">
+          <div class="mid"><p><span>期限</span>{{periodName}}</p></div>
+          <div class="mid"><p><span>总额</span>{{this.content.borrow_money}}万</p></div>
+        </van-col>
+        <van-col span="6">
           <div class="right">
-            <van-button :round="true" :color="statusColor" >{{buttonStatus}}</van-button>
+            <van-circle
+                    :value="rateCrile"
+                    :rate="100"
+                    :stroke-width="50"
+                    layer-color="#e6eaf2"
+                    size="60px"
+                    :color="borderColor"
+            ><i :class="CrileStyle" slot="default">{{buttonStatus}}</i></van-circle>
+<!--            <van-button :round="true" :color="statusColor" >{{buttonStatus}}</van-button>-->
           </div>
         </van-col>
       </van-row>
     </div>
-    <div class="foot">
-      <van-button disabled color="#d1d3d8" class="footbtn">
-        <span class="btncl">项目总额：{{this.content.borrow_money}}万</span>
-      </van-button>
-      <van-button disabled color="#d1d3d8" class="footbtn">
-        <span class="btncl">剩余可投：{{this.content.lavemoney}}万</span>
-      </van-button>
-    </div>
-    <div>
-
-    </div>
+<!--    <div class="foot">-->
+<!--      <van-button disabled color="#d1d3d8" class="footbtn">-->
+<!--        <span class="btncl">项目总额：{{this.content.borrow_money}}万</span>-->
+<!--      </van-button>-->
+<!--      <van-button disabled color="#d1d3d8" class="footbtn">-->
+<!--        <span class="btncl">剩余可投：{{this.content.lavemoney}}万</span>-->
+<!--      </van-button>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -38,7 +46,10 @@
     name: "iListItem",
     data(){
       return{
-        statusColor:" linear-gradient(to right, #d1d3d8, #d1d3d8)"
+        statusColor:" linear-gradient(to right, #d1d3d8, #d1d3d8)",
+        currentRate: 100,
+        CrileStyle:{'glaxytext':true},
+        borderColor:"#ebedf0",
       }
     },
     props:{
@@ -50,6 +61,9 @@
       }
     },
     computed:{
+      rateCrile(){
+        return (1-this.content.lavemoney/this.content.borrow_money)*100
+      },
       sysRate(){
         return this.content.sys_up_rate === "" ? "" : "+"+this.content.sys_up_rate
       },
@@ -64,8 +78,10 @@
             return "初审中";
             break;
           case 5:
-            this.statusColor = "linear-gradient(to right, #2674f6, #1f4ce1)";
-            return "筹款中";
+            this.CrileStyle.glaxytext=false
+            this.CrileStyle.bluetext=true
+            this.borderColor = "#2362ec"
+            return "出借中";
             break;
           case 6:
             return "已满标";
@@ -87,7 +103,7 @@
 
 <style scoped>
   .title{
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     height: 40px;
     line-height: 40px;
@@ -100,7 +116,7 @@
     border-bottom: 1px solid #e5e5e5;
   }
   .midItem{
-    height: 50px;
+    height: 60px;
   }
   .midItem .left{
     height: 32px;
@@ -108,7 +124,7 @@
   .midItem .left p{
     font-weight: bold;
     color: #ed532e;
-    font-size: 24px;
+    font-size: 22px;
     font-family: '微软雅黑';
     padding-bottom: 5px;
   }
@@ -122,17 +138,20 @@
     padding-top: 5px;
   }
   .mid{
-    text-align: center;
+    text-align: left;
   }
   .mid p{
     font-weight: 700;
-    font-size: 15px;
+    font-size: 13px;
     height: 32px;
     line-height: 32px;
   }
   .mid span{
     color: #737373;
     font-size: 12px;
+
+    font-weight: normal;
+    padding-right: 5px;
   }
   .foot{
     padding: 10px 0;
@@ -145,5 +164,17 @@
   }
   .btncl{
     color: #737373;
+  }
+  .bluetext{
+    color: #2362ec;
+    line-height: 60px;
+    font-style: normal;
+    font-size: 12px;
+  }
+  .glaxytext{
+    color: #939393;
+    line-height: 60px;
+    font-style: normal;
+    font-size: 12px;
   }
 </style>

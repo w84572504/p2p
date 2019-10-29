@@ -16,18 +16,18 @@
       <steps :guide="guide" v-if="guide > 0"></steps>
       <title-nav :link="'Invest/index'" :title="'热门产品'"></title-nav>
       <i-list :data="recommLoan"></i-list>
-      <title-nav :isright="false" :title="'信息披露'" :lable="'实施披露 透明公开'"></title-nav>
-      <van-row type="flex" justify="center">
-        <van-col span="12" align="center">
-          <van-cell :title="loandata.tradeAmountTotal"  label="累计借贷金额(万)" title-class="allMoney"/>
-        </van-col>
-        <van-col span="12" align="center">
-          <van-cell :title="loandata.creditBalance"  label="累计收益(万)" title-class="allMoney"/>
-        </van-col>
-      </van-row>
-      <div class="moreBtn">
-        <van-button v-for="(v,i) in pilu" :key="i" :color="v.color">{{v.name}}</van-button>
-      </div>
+<!--      <title-nav :isright="false" :title="'信息披露'" :lable="'实施披露 透明公开'"></title-nav>-->
+<!--      <van-row type="flex" justify="center">-->
+<!--        <van-col span="12" align="center">-->
+<!--          <van-cell :title="loandata.tradeAmountTotal"  label="累计借贷金额(万)" title-class="allMoney"/>-->
+<!--        </van-col>-->
+<!--        <van-col span="12" align="center">-->
+<!--          <van-cell :title="loandata.creditBalance"  label="累计收益(万)" title-class="allMoney"/>-->
+<!--        </van-col>-->
+<!--      </van-row>-->
+<!--      <div class="moreBtn">-->
+<!--        <van-button v-for="(v,i) in pilu" :key="i" :color="v.color">{{v.name}}</van-button>-->
+<!--      </div>-->
       <van-row type="flex" justify="center" >
         <van-col span="18" align="center" >
           <van-button class="phone" disabled round  plain color="#818181" hairline icon="audio" >联系客服{{phone}}</van-button>
@@ -119,7 +119,7 @@ export default {
     display: flex;
   }
   .notice img{
-    flex: .2;
+    flex: .1;
   }
 .notice-wiper{
   height: 20px;

@@ -3,19 +3,19 @@ import VueRouter from 'vue-router'
 import store from 'store/index'
 
 Vue.use(VueRouter)
-
+// 首页
 const Home = () => import('views/home/Home');
 
-
+// 出借
 const Invest = () => import('views/invest/Invest');
-
+// 登录
 const LoginIndex = () => import('views/login/LoginIndex');
 const Login = () => import('views/login/Login');
 const Register = () => import('views/login/Register');
-
+// 新闻
 const News = () => import('views/news/News');
 
-
+// 用户中心
 const User = () => import('views/user/User');
 
 const routes = [
