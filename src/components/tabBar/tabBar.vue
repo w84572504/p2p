@@ -3,7 +3,7 @@
      <tab-bar-item path="/home" icon="bc-home">
        <span>首页</span>
      </tab-bar-item>
-    <tab-bar-item path="/invest" icon="bc-invest">
+    <tab-bar-item path="/loan/list" icon="bc-invest">
       <span>出借</span>
     </tab-bar-item>
     <tab-bar-item path="/news" icon="bc-news">

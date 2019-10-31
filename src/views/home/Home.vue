@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div >
+    <div v-if="Object.keys(banner).length !==0">
       <nav-bar><span slot="left">首页</span></nav-bar>
       <Swiper  :banner="banner" />
       <div class="notice">
@@ -14,7 +14,7 @@
       </van-grid>
       <title-nav :isright="false" :title="'新手引导'" ></title-nav>
       <steps :guide="guide" v-if="guide > 0"></steps>
-      <title-nav :link="'Invest/index'" :title="'热门产品'"></title-nav>
+      <title-nav :link="'Loan/index'" :title="'产品列表'"></title-nav>
       <i-list :data="recommLoan"></i-list>
 <!--      <title-nav :isright="false" :title="'信息披露'" :lable="'实施披露 透明公开'"></title-nav>-->
 <!--      <van-row type="flex" justify="center">-->

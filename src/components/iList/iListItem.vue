@@ -57,7 +57,7 @@
     },
     methods:{
       goDetail(){
-        this.$router.push("Invest/detail/"+this.content.id)
+        this.$router.push("/loan/detail/"+this.content.id)
       }
     },
     computed:{
@@ -94,9 +94,6 @@
             break;
         }
       },
-      dteailUrl(){
-        return "/Invest/detail/"+this.content.id
-      }
     }
   }
 </script>

@@ -7,7 +7,9 @@ Vue.use(VueRouter)
 const Home = () => import('views/home/Home');
 
 // 出借
-const Invest = () => import('views/invest/Invest');
+const LoanIndex = () => import('views/loan/LoanIndex');
+const LoanList = () => import('views/loan/List');
+const LoanDetail = () => import('views/loan/Detail');
 // 登录
 const LoginIndex = () => import('views/login/LoginIndex');
 const Login = () => import('views/login/Login');
@@ -32,12 +34,30 @@ const routes = [
     }
   },
   {
-    path: '/invest',
-    name: 'invest',
-    component: Invest,
+    path: '/loan',
+    name: 'loan',
+    component: LoanIndex,
     meta: {
       islogin: false
-    }
+    },
+    children:[
+      {
+        path:'list',
+        name: 'list',
+        component:LoanList,
+        meta: {
+          islogin: false
+        },
+      },
+      {
+        path:'detail/:id',
+        name: 'detail',
+        component:LoanDetail,
+        meta: {
+          islogin: false
+        },
+      },
+    ]
   },
   {
     path: '/login',
