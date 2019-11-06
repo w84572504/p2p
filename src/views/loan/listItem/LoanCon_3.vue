@@ -1,22 +1,24 @@
 <template>
   <div>
-    <scroll class="wrapper" ref="wrapper" :data="data" @pullingDown="pullingDown">
+    <scroll class="wrapper" ref="wrapper" :data="data.List" @pullingDown="pullingDown">
       <div class="content">
-      <p class="count">出借人数：<i>{{count.count}}</i> 出借金额：<i>{{count.count}}</i>元</p>
         <div class="table">
+          <h3>安全保障</h3>
+          <p>{{data.fengkong}}</p>
           <div class="tableDiv">
             <span class="tb-1">序号</span>
-            <span class="tb-2">出借人</span>
-            <span class="tb-3">出借金额</span>
-            <span class="tb-4 noline">出借时间</span>
+            <span class="tb-2">审核资料</span>
+            <span class="tb-3">审核情况</span>
+            <span class="tb-4">审核人</span>
           </div>
-          <div class="tableDiv" v-for="(v,i) in data" :key="i">
+          <div class="tableDiv" v-for="(v,i) in data.List" :key="i">
             <span class="tb-1">{{i+1}}</span>
-            <span class="tb-2">{{v.phone}}</span>
-            <span class="tb-3">{{v.invest_amount}}</span>
-            <span class="tb-4">{{v.invest_time}}</span>
+            <span class="tb-2">{{v.name}}</span>
+            <span class="tb-3">通过</span>
+            <span class="tb-4">{{v.user}}</span>
           </div>
         </div>
+        <p class="bt-bg"></p>
       </div>
     </scroll>
   </div>
@@ -27,9 +29,9 @@
   import Scroll from "components/scroll/Scroll";
 
   import DetailList from "./DetailList";
-  import {getLoanDetail_3} from "network/loan";
+  import {getLoanDetail_4} from "network/loan";
   export default {
-    name: "LoanCon_2",
+    name: "LoanCon_3",
     components:{
       titleNav,
       DetailList,
@@ -43,22 +45,20 @@
     },
     data(){
       return{
-        data:[],
-        count:{},
+        data:{},
       }
     },
     created() {
-      this._getLoanDetail_3()
+      this._getLoanDetail_4()
     },
     methods:{
-      _getLoanDetail_3(){
-        getLoanDetail_3(this.id).then( res =>{
+      _getLoanDetail_4(){
+        getLoanDetail_4(this.id).then( res =>{
           console.log(res);
           if (res.State !== '200'){
             this.$toast.show(res.Msg)
           }else {
-            this.data= res.Msg.List
-            this.count = res.Msg.Count
+            this.data= res.Msg
           }
         })
       },
@@ -74,14 +74,8 @@
     height: calc(100vh - 125px);
     overflow: hidden;
   }
-  .info-swiper{
-    height: 200px;
-  }
   .bt-bg{
     height: 50px;
-  }
-  .count{
-    padding:0px 20px 20px 20px
   }
   .count i {
     font-style: normal;
@@ -90,13 +84,21 @@
   .table{
     padding:0 20px
   }
+  .table h3{
+    font-size: 13px;
+    line-height: 30px;
+  }
+  .table p{
+    font-size: 13px;
+    line-height: 30px;
+  }
   .tableDiv{
     display: flex;
     border-bottom: 1px solid #e6e6e6;
     font-size: 14px;
     color: #000;
     padding:10px 0;
-    line-height: 40px;
+    line-height: 30px;
   }
   .tableDiv span{
     text-align: center;
@@ -107,10 +109,7 @@
   .tb-2,.tb-3,.tb-4{
     flex: 3;
   }
-  .tb-4{
-    line-height: 20px;
-  }
-  .noline{
-    line-height: 40px;
+  .bt-bg{
+    height: 50px;
   }
 </style>
