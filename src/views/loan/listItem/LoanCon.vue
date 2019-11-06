@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <van-row justify="center" type="flex" v-if="data.length !== 0">
+  <div class="fCon">
+    <van-row justify="center" type="flex" >
       <van-col span="22" class="top-box">
         <slot name="title"></slot>
         <div v-for="(item,i) in data" :key="i" class="Con">
@@ -31,18 +31,23 @@
 </script>
 
 <style scoped>
+  .fCon{
+    padding-top: 20px
+  }
   .Con{
     width: 100%;
+    display: flex;
   }
   .leftCon{
-    float: left;
-    padding:10px 30px 0px 0px;
-    font-size: 14px;
+    flex: 1;
+    font-size: 13px;
     color: #737373;
+    padding:10px 0px 10px 0px
   }
   .rightCon{
+    flex: 4;
     float: left;
-    font-size: 14px;
+    font-size: 13px;
     padding:10px 0px 10px 0px
   }
 </style>

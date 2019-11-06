@@ -1,64 +1,82 @@
 <template>
   <div>
-      <nav-bar>
-        <span slot="left" class="iconfont bc-back"> </span>
-        <span slot="mid">出借详情</span>
-      </nav-bar>
-    <van-row justify="center" type="flex" v-if="Object.keys(data).length !== 0">
-      <van-col span="22" class="top-box">
+    <nav-bar>
+      <span slot="left" class="iconfont bc-back"> </span>
+      <span slot="mid">出借详情</span>
+    </nav-bar>
+    <scroll class="wrapper" ref="wrapper" :data="dataCon" @pullingDown="pullingDown" @scroll="scroll" :listenScroll="true">
+      <div class="content">
         <van-row type="flex" justify="center">
-          <div class="rate">{{htmlRate}}<span>{{htmlSysRate}}</span></div>
+          <van-loading type="spinner" class="refurbish top-refurbish">下拉刷新</van-loading>
         </van-row>
-        <van-row type="flex" justify="center"> <span class="rateText">年化利率</span> </van-row>
-        <van-row type="flex" justify="center" >
-          <van-col span="6" align="center">
-            <p class="top-num">{{data.period}}</p>
-            <p class="top-txt">项目期限</p>
-          </van-col>
-          <van-col span="6" align="center">
-            <p class="top-num">{{(data.borrow_money/10000).toFixed(2) }}万</p>
-            <p class="top-txt">项目总额</p>
-          </van-col>
-          <van-col span="6" align="center">
-            <p class="top-num">{{(data.order_money/10000).toFixed(2)}}万</p>
-            <p class="top-txt">剩余金额</p>
+        <van-row justify="center" type="flex" v-if="Object.keys(data).length !== 0">
+          <van-col span="22" class="top-box">
+            <van-row type="flex" justify="center">
+              <div class="rate">{{htmlRate}}<span>{{htmlSysRate}}</span></div>
+            </van-row>
+            <van-row type="flex" justify="center"> <span class="rateText">年化利率</span> </van-row>
+            <van-row type="flex" justify="center" >
+              <van-col span="6" align="center">
+                <p class="top-num">{{data.period}}</p>
+                <p class="top-txt">项目期限</p>
+              </van-col>
+              <van-col span="6" align="center">
+                <p class="top-num">{{(data.borrow_money/10000).toFixed(2) }}万</p>
+                <p class="top-txt">项目总额</p>
+              </van-col>
+              <van-col span="6" align="center">
+                <p class="top-num">{{(data.order_money/10000).toFixed(2)}}万</p>
+                <p class="top-txt">剩余金额</p>
+              </van-col>
+            </van-row>
+            <van-row justify="center" type="flex">
+              <van-col span="22" class="slider">
+                <div class="slider-bg"></div>
+                <div class="slider-line" :style="showLine"></div>
+                <span class="slider-text" :style="showLineText">已加入{{slider}}%</span>
+              </van-col>
+            </van-row>
           </van-col>
         </van-row>
-        <van-row justify="center" type="flex">
-          <van-col span="22" class="slider">
-            <div class="slider-bg"></div>
-            <div class="slider-line" :style="showLine"></div>
-            <span class="slider-text" :style="showLineText">已加入{{slider}}%</span>
-          </van-col>
-        </van-row>
-      </van-col>
+        <loan-con :data="dataCon"></loan-con>
+        <van-notice-bar v-if="showcePing" :scrollable="false" left-icon="info-o" mode="link" @click="goPingce">
+          {{ceping}}
+        </van-notice-bar>
+        <van-divider icon="arrow-up">上拉查看更多信息</van-divider>
+        <van-divider icon="arrow-up">白菜金融提醒您：出借有风险 出借需谨慎</van-divider>
+        <p class="bt-bg"></p>
+      </div>
+    </scroll>
+    <van-row type="flex" justify="center">
+      <van-col span="20"><van-button type="info" :round="true" color="#2570f4" class="loanBtn">立即出借</van-button></van-col>
     </van-row>
-    <loan-con :data="dataCon"></loan-con>
   </div>
 </template>
 
 <script>
-  import navBar from "components/navBar/navBar"
+  import navBar from "components/navBar/navBar";
+  import Scroll from "components/scroll/Scroll";
+
   import {getLoanDetail_1} from 'network/loan'
-  import LoanCon from "./LoanCon";
+  import LoanCon from "./listItem/LoanCon";
   export default {
     name: "Detail",
     components:{
       navBar,
-      LoanCon
+      LoanCon,
+      Scroll
     },
     data(){
       return {
         data:{},
         dataCon:[],
-        slider:0
+        slider:0,
+        ceping:"您尚未进行风险评估，请先去评估",
+        curHeight:0,
       }
     },
     created() {
       this._getLoanDetail_1()
-    },
-    mounted() {
-
     },
     methods:{
       _getLoanDetail_1(){
@@ -81,6 +99,18 @@
             ]
           }
         })
+      },
+      goPingce(){
+        window.location.href=this.data.cepingUrl
+      },
+      pullingDown(){
+        this._getLoanDetail_1()
+        this.$refs.wrapper.finishPullDown();
+      },
+      scroll(config){
+        if (config.y < -100){
+          this.$router.push("/loan/Detail_1/"+this.$route.params.id)
+        }
       }
     },
     computed:{
@@ -96,6 +126,16 @@
       showLineText(){
         let sliderLeft =  76/100 *this.slider
         return {left:sliderLeft+'%'}
+      },
+      showcePing(){
+        if(this.data.userScore ===1 && this.data.yearScore===1){
+          return false
+        }else if(this.data.userScore ===1 && this.data.yearScore===0 ){
+          this.ceping = "您的风险评估已过期,请重新评估"
+          return  true
+        }else{
+          return  true
+        }
       }
     },
 
@@ -103,8 +143,23 @@
 </script>
 
 <style scoped>
+  .wrapper{
+    height: calc(100vh - 95px);
+    overflow: hidden;
+  }
+  .refurbish{
+    height: 40px;
+    line-height: 49px;
+    text-align: center;
+    color: #737373;
+    position: fixed;
+  }
+  .top-refurbish{
+    top:-45px;
+  }
   .top-box{
-    padding-top: 10px;
+    margin-top:20px ;
+    padding-top: 20px;
     box-shadow: 0 0px 4px #dae6fa;
   }
   .rate{
@@ -123,7 +178,7 @@
   .top-num{
     font-size: 15px;
     font-weight: 600;
-    padding-top:10px;
+    padding-top:15px;
   }
   .top-txt{
     font-size: 13px;
@@ -154,4 +209,11 @@
     transition: left 1s;
     padding-top: 5px;
   }
+  .loanBtn{
+    width: 100%;
+  }
+  .bt-bg{
+    height: 50px;
+  }
+
 </style>

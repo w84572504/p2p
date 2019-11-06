@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div id="loan">
     <nav-bar><span slot="left">出借</span></nav-bar>
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
     <van-row justify="center" type="flex" class="banner">
       <van-col span="20"><van-image :src="banner.filepath" /></van-col>
     </van-row>
@@ -9,19 +8,21 @@
       <van-tab title="直投专区">
         <div>
           <loan-type :data="investment" @changeVal="getLaonType"></loan-type>
-          <loan-list ref="loanlist" :active="active" :prams="loanType"></loan-list>
+          <loan-list ref="loanlist" :types="active" :prams="loanType" ></loan-list>
         </div>
       </van-tab>
       <van-tab title="债转专区">
         <div>
           <loan-type  :data="claim" @changeVal="getAssType"></loan-type>
-          <ass-list ref="asslist" :active="active" :prams="assType"></ass-list>
+          <div>
+            <loan-list ref="asslist" :types="active" :prams="assType"></loan-list>
+          </div>
+<!--          <ass-list ref="asslist" :active="active" :prams="assType"></ass-list>-->
         </div>
       </van-tab>
     </van-tabs>
       <div class="bot"></div>
     <tab-bar></tab-bar>
-    </van-pull-refresh>
   </div>
 </template>
 
@@ -32,7 +33,6 @@
   import {getLoanList,getLoanType} from 'network/loan'
   import LoanType from "./listItem/LoanType";
   import LoanList from "./listItem/LoanList";
-  import AssList from "./listItem/AssList";
   export default {
     name: "List",
     components: {
@@ -40,7 +40,6 @@
       navBar,
       LoanType,
       LoanList,
-      AssList,
     },
     data(){
       return{
@@ -51,7 +50,6 @@
         claim:[], //债转筛选
         investment:[], //直投筛选
         active:0,
-        isLoading:false
       }
     },
     created() {
@@ -79,7 +77,6 @@
           this.loanType.status=val
         }
         this.$refs.loanlist.clearData()
-        this.$refs.loanlist.onLoad()
       },
       getAssType(type,val){
         if (type === 0){
@@ -88,18 +85,16 @@
           this.assType.status=val
         }
         this.$refs.asslist.clearData()
-        this.$refs.asslist.onLoad()
-      },
-      onRefresh() {
-        this.$refs.loanlist.clearData()
-        this.$refs.loanlist.onLoad()
-        this.isLoading = false;
       },
     },
   }
 </script>
 
 <style scoped>
+  #loan{
+    height: 100vh;
+    overflow: hidden;
+  }
   .banner{
     padding-top: 10px;
   }

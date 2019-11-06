@@ -6,7 +6,8 @@
   --color-tint:#ff8198;
   --color-background:#fff;
   --font-size:14px;
-  --line-height:1.5
+  --line-height:1.5;
+  --cube-size: 10px;
 }
 
 *,

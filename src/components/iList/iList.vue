@@ -19,7 +19,7 @@
 
 <style scoped>
 .ilist{
-  padding:10px 20px 0px 20px ;
+  padding:0px 20px 0px 20px ;
   background-color: #fff;
 }
 </style>
