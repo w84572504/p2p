@@ -43,7 +43,7 @@
       /** * 是否派发顶部下拉的事件 */
       pulldown: {
         type: Boolean,
-        default: false
+        default: true
       },
       /** * 是否派发列表滚动开始的事件 */
       beforeScroll: {
@@ -102,9 +102,17 @@
         }
         //是否派发顶部下拉事件
         if (this.pulldown) {
-          this.scroll.on('touchend', (pos) => { // 下拉动作
+          this.scroll.on('touchEnd', (pos) => { // 下拉动作
             if (pos.y > 50) {
-              this.$emit('pulldown')
+              this.$emit('pulldown',pos)
+            }
+          })
+        }
+        //是否派发底部上拉事件
+        if (this.pullup) {
+          this.scroll.on('touchEnd', (pos) => { // 下拉动作
+            if (pos.y < -50) {
+              this.$emit('pullup',pos)
             }
           })
         }

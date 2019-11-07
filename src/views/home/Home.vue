@@ -110,7 +110,9 @@ export default {
     height: calc(100vh - 98px);
     overflow: hidden;
   }
-  .content{ }
+  .content{
+    background-color: #f5f6fa;
+  }
   .refurbish{
     height: 40px;
     line-height: 49px;

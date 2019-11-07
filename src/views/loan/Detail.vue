@@ -4,7 +4,7 @@
       <span slot="left" class="iconfont bc-back"> </span>
       <span slot="mid">出借详情</span>
     </nav-bar>
-    <scroll class="wrapper" ref="wrapper" :data="dataCon" @pullingDown="pullingDown" @scroll="scroll" :listenScroll="true">
+    <scroll class="wrapper" ref="wrapper" :data="dataCon" @pullingDown="pullingDown" @pullup="pullup" :pullup="true">
       <div class="content">
         <van-row type="flex" justify="center">
           <van-loading type="spinner" class="refurbish top-refurbish">下拉刷新</van-loading>
@@ -42,29 +42,28 @@
         <van-notice-bar v-if="showcePing" :scrollable="false" left-icon="info-o" mode="link" @click="goPingce">
           {{ceping}}
         </van-notice-bar>
-        <van-divider icon="arrow-up">上拉查看更多信息</van-divider>
-        <van-divider icon="arrow-up">白菜金融提醒您：出借有风险 出借需谨慎</van-divider>
-        <p class="bt-bg"></p>
+        <van-divider class="info-text" icon="arrow-up">上拉查看更多信息</van-divider>
+        <van-divider class="info-text" icon="arrow-up">白菜金融提醒您：出借有风险 出借需谨慎</van-divider>
       </div>
     </scroll>
-    <van-row type="flex" justify="center">
-      <van-col span="20"><van-button type="info" :round="true" color="#2570f4" class="loanBtn">立即出借</van-button></van-col>
-    </van-row>
+    <bottom-btn :status="data.status" @btnClick="goInvest"></bottom-btn>
   </div>
 </template>
 
 <script>
-  import navBar from "components/navBar/navBar";
-  import Scroll from "components/scroll/Scroll";
+  import navBar from "components/navBar/navBar"
+  import Scroll from "components/scroll/Scroll"
 
   import {getLoanDetail_1} from 'network/loan'
-  import LoanCon from "./listItem/LoanCon";
+  import LoanCon from "./listItem/LoanCon"
+  import bottomBtn from "./listItem/bottomBtn";
   export default {
     name: "Detail",
     components:{
       navBar,
       LoanCon,
-      Scroll
+      Scroll,
+      bottomBtn
     },
     data(){
       return {
@@ -107,9 +106,12 @@
         this._getLoanDetail_1()
         this.$refs.wrapper.finishPullDown();
       },
-      scroll(config){
-        if (config.y < -100){
-          this.$router.push("/loan/Detail_1/"+this.$route.params.id)
+      pullup(){
+        this.$router.push("/loan/Detail_1/"+this.$route.params.id+"/"+this.data.status)
+      },
+      goInvest(){
+        if (this.data.status === 5){
+          this.$router.push("/loan/invest/"+this.$route.params.id)
         }
       }
     },
@@ -136,7 +138,7 @@
         }else{
           return  true
         }
-      }
+      },
     },
 
   }
@@ -209,11 +211,8 @@
     transition: left 1s;
     padding-top: 5px;
   }
-  .loanBtn{
-    width: 100%;
-  }
-  .bt-bg{
-    height: 50px;
+  .info-text{
+    font-size: 12px;
   }
 
 </style>

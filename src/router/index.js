@@ -11,6 +11,7 @@ const LoanIndex = () => import('views/loan/LoanIndex');
 const LoanList = () => import('views/loan/List');
 const LoanDetail = () => import('views/loan/Detail');
 const LoanDetail_1 = () => import('views/loan/Detail_1');
+const LoanInvest = () => import('views/loan/LoanInvest');
 // 登录
 const LoginIndex = () => import('views/login/LoginIndex');
 const Login = () => import('views/login/Login');
@@ -59,11 +60,19 @@ const routes = [
         },
       },
       {
-        path:'detail_1/:id',
+        path:'detail_1/:id/:status',
         name: 'detail_1',
         component:LoanDetail_1,
         meta: {
           islogin: false
+        },
+      },
+      {
+        path:'invest/:id',
+        name: 'invest',
+        component:LoanInvest,
+        meta: {
+          islogin: true
         },
       },
     ]

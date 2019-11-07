@@ -2,7 +2,7 @@
   <div>
     <scroll class="wrapper" ref="wrapper" :data="data" @pullingDown="pullingDown">
       <div class="content">
-      <p class="count">出借人数：<i>{{count.count}}</i> 出借金额：<i>{{count.count}}</i>元</p>
+      <p class="count">出借人数：<i>{{count.count}}</i> 出借金额：<i>{{count.money}}</i>元</p>
         <div class="table">
           <div class="tableDiv">
             <span class="tb-1">序号</span>
