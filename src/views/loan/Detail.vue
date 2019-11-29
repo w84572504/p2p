@@ -149,6 +149,9 @@
     height: calc(100vh - 95px);
     overflow: hidden;
   }
+  .content{
+    min-height: 100vh;
+  }
   .refurbish{
     height: 40px;
     line-height: 49px;

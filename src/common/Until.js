@@ -18,6 +18,7 @@ const debounce = (func, wait) => {
     }, wait);
   }
 }
+//button 按钮返回信息
 function btnText(status){
   let text = "";
   //标的状态(状态0-初发布 1-初审中 2-初审未通过 3-复审中 4-复审未通过 5-筹款中 6-满标待放款 7-还款中 8-已还完 9-已流标)
